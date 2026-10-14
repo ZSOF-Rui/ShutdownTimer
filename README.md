@@ -1,7 +1,7 @@
 # ShutdownTimer
 ⏰ A beautiful cross-platform shutdown timer with custom wallpapers, themes, autostart, auto-update and lock-screen reliable triggering
 
-—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————————————————————
 # ⏰ ShutdownTimer
 
 > 一款精美的跨平台定时关机工具，让电脑在指定时间优雅地自动关闭。
