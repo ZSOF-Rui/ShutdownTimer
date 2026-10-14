@@ -1,8 +1,52 @@
 # ShutdownTimer
 ⏰ A beautiful cross-platform shutdown timer with custom wallpapers, themes, autostart, auto-update and lock-screen reliable triggering
 
-ShutdownTimer Proprietary License
-Copyright (c) 2026 ZSOF.Rui. All Rights Reserved.
+—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+# ⏰ ShutdownTimer
+
+> 一款精美的跨平台定时关机工具，让电脑在指定时间优雅地自动关闭。
+
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue)
+![Python](https://img.shields.io/badge/python-3.9%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-1.0.0-orange)
+
+## ✨ 特性
+
+- 🎨 **精美界面** — 圆角卡片式设计，平滑动画，支持深色/浅色模式
+- 🖼️ **自定义壁纸** — 本地图片 / 网络链接 / 随机图源（Picsum、LoremFlickr、二次元、Bing）
+- 🌈 **四种主题** — 午夜蓝 / 暗夜紫 / 森林绿 / 落日橙
+- 🌏 **中英双语** — 一键切换，丝滑过渡
+- ⚡ **快速预设** — 5分钟 / 10分钟 / 30分钟 / 1小时
+- 🔒 **锁屏可靠** — 后台线程 + wall clock，锁屏后仍能准时触发
+- 🚀 **开机自启** — 一键开关，注册表 / LaunchAgents 自动处理
+- 🔄 **自动更新** — 检测新版本，一键下载替换重启
+- 💾 **配置持久化** — 主题、语言、壁纸全部记住
+
+## 📸 截图
+
+| 主界面 | 设置面板 |
+|:---:|:---:|
+| ![main](docs/screenshot-main.png) | ![settings](docs/screenshot-settings.png) |
+
+## 🚀 快速开始
+
+### 下载使用
+
+前往 [Releases](../../releases) 下载最新版本：
+
+- **Windows**：`ShutdownTimer.exe`（双击即用，无需安装）
+- **macOS**：`ShutdownTimer.app.zip`（解压后拖入 Applications）
+
+### 从源码运行
+
+```bash
+git clone https://github.com/ZSOF-Rui/ShutdownTimer.git
+cd ShutdownTimer
+pip install Pillow
+python ShutdownTimer.py
+
+—————————————————————————————————————————————————————————————————————————————————————————————
 
 本软件及其源代码、文档、图像、图标等所有相关材料（以下简称"本软件"）
 均为 ZSOF.Rui（以下简称"版权人"）的专有财产，受中华人民共和国著作权法
