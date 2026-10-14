@@ -44,7 +44,7 @@
 git clone https://github.com/ZSOF-Rui/ShutdownTimer.git
 cd ShutdownTimer
 pip install Pillow
-python ShutdownTimer.py
+python ShutdownTimer.py```
 
 ———————————————————————————————————————————
 
