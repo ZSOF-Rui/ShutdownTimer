@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-accent="blue" data-root=".">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="nf.meta.title">页面不存在 · 到点下班</title>
+  <meta name="robots" content="noindex">
+
+  <!--
+    GitHub Pages 的自定义 404 页会出现在任意深度的路径下，
+    因此这里用 <base> 把相对路径钉死在站点根目录。
+    仓库名不是 ShutdownTimer，或部署在 username.github.io 根仓库时，
+    把下面的 href 改成 /你的仓库名/ 或 / 即可。
+  -->
+  <base href="/ShutdownTimer/">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script>
+  (function () {
+    var el = document.documentElement;
+    el.className += ' js';
+    try {
+      var lang = localStorage.getItem('st.lang');
+      if (lang) el.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
+      var saved = localStorage.getItem('st.theme');
+      var system = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      el.setAttribute('data-theme', saved === 'light' || saved === 'dark' ? saved : system);
+      var accent = localStorage.getItem('st.accent');
+      if (accent) el.setAttribute('data-accent', accent);
+    } catch (e) { /* 保持默认 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/i18n.js" defer></script>
+</head>
+
+<body>
+<main class="notfound">
+  <div>
+    <div class="notfound__code" aria-hidden="true">404</div>
+    <h1 class="notfound__title" data-i18n="nf.title">这个页面已经下班了</h1>
+    <p class="notfound__lead" data-i18n="nf.lead">你要找的地址不存在，可能链接已经过期。</p>
+    <a class="btn btn--primary btn--lg" href="./" data-i18n="nf.back">回到首页</a>
+  </div>
+</main>
+
+<!-- 只要语言切换与主题着色，不需要主脚本的其余功能 -->
+<script>
+(function () {
+  var dict = window.ST_I18N || {};
+  var lang = (function () {
+    try { return localStorage.getItem('st.lang') === 'en' ? 'en' : 'zh-CN'; } catch (e) { return 'zh-CN'; }
+  })();
+  var table = dict[lang] || dict['zh-CN'] || {};
+  Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (el) {
+    var value = table[el.getAttribute('data-i18n')];
+    if (value) el.textContent = value;
+  });
+})();
+</script>
+</body>
+</html>

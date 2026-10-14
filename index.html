@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-accent="blue" data-root=".">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--
+    到点下班 / ShutdownTimer 官网
+    零依赖静态站：没有构建步骤，没有 CDN，除了读取同目录的 version.json 之外不发任何请求。
+    部署前只需把本文件（以及全站）里的 YOUR_GITHUB_USERNAME 替换成你的 GitHub 用户名，
+    详见 README.md。
+  -->
+
+  <title data-i18n="meta.title">到点下班 · 跨平台定时关机工具</title>
+  <meta name="description" content="到点下班（ShutdownTimer）是一款跨平台的定时关机工具。设定时间后到点自动关闭计算机，锁屏与休眠唤醒后依然准时触发。免安装、不收集任何数据。" data-i18n-content="meta.description">
+  <meta name="author" content="ZSOF.Rui">
+  <link rel="canonical" href="https://YOUR_GITHUB_USERNAME.github.io/ShutdownTimer/">
+  <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f5f7fb" media="(prefers-color-scheme: light)">
+
+  <!-- 图标：内联 SVG，随主题变色，不额外请求字体或图标库 -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
+
+  <!-- 分享卡片 -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="到点下班">
+  <meta property="og:title" content="到点下班 · 跨平台定时关机工具">
+  <meta property="og:description" content="设好时间，到点自动关闭计算机。锁屏也能可靠触发，免安装，不收集任何数据。">
+  <meta property="og:url" content="https://YOUR_GITHUB_USERNAME.github.io/ShutdownTimer/">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="到点下班 · 跨平台定时关机工具">
+  <meta name="twitter:description" content="设好时间，到点自动关闭计算机。锁屏也能可靠触发。">
+  <!-- 想要更漂亮的分享图：做一张 1200×630 的 PNG 放到 assets/og-image.png，再取消下一行注释 -->
+  <!-- <meta property="og:image" content="https://YOUR_GITHUB_USERNAME.github.io/ShutdownTimer/assets/og-image.png"> -->
+
+  <!-- 结构化数据（SEO） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "到点下班",
+    "alternateName": "ShutdownTimer",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows 10, Windows 11",
+    "downloadUrl": "https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer/releases/latest",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+    "author": { "@type": "Person", "name": "ZSOF.Rui" },
+    "description": "跨平台桌面定时关机工具：设定时间后到点自动关闭计算机，锁屏与休眠唤醒后依然准时触发。"
+  }
+  </script>
+
+  <!--
+    首屏内联引导脚本：在样式表之前决定主题 / 主色 / 语言，
+    避免先渲染成错误配色再跳变的闪屏。失败也不影响页面可用（默认深色 + 中文）。
+  -->
+  <script>
+  (function () {
+    var el = document.documentElement;
+    el.className += ' js';
+    try {
+      var accent = localStorage.getItem('st.accent');
+      if (accent) el.setAttribute('data-accent', accent);
+      var lang = localStorage.getItem('st.lang');
+      if (lang) el.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
+      var saved = localStorage.getItem('st.theme');
+      var system = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      el.setAttribute('data-theme', saved === 'light' || saved === 'dark' ? saved : system);
+    } catch (e) { /* 隐私模式：保持默认配色 */ }
+  })();
+  </script>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/i18n.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+
+<body>
+<a class="skip-link" href="#download" data-i18n="nav.skip">跳到下载</a>
+
+<!-- ============================================================ 顶部导航 -->
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="主导航" data-i18n-aria="nav.main">
+      <a class="brand" href="./" aria-label="返回首页" data-i18n-aria="nav.home">
+        <svg class="brand__mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="4" width="20" height="24" rx="5"/>
+          <circle cx="14" cy="16" r="6"/>
+          <path d="M14 12.5V16l3 1.8"/>
+        </svg>
+        <span data-i18n="brand.name">到点下班</span>
+      </a>
+
+      <ul class="nav__links">
+        <li><a class="nav__link" href="#features" data-i18n="nav.features">功能</a></li>
+        <li><a class="nav__link" href="#download" data-i18n="nav.download">下载</a></li>
+        <li><a class="nav__link" href="changelog/" data-i18n="nav.changelog">更新日志</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <div class="seg" role="group" aria-label="切换语言" data-i18n-aria="nav.lang">
+          <span class="seg__thumb" aria-hidden="true"></span>
+          <button class="seg__btn" type="button" data-lang-btn="zh-CN" aria-pressed="true">中</button>
+          <button class="seg__btn" type="button" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="切换到浅色模式">
+          <svg class="icon-btn__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <svg class="icon-btn__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+
+        <a class="icon-btn" href="https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer" target="_blank" rel="noopener" aria-label="在 GitHub 上查看源码" data-i18n-aria="nav.github">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-2.1c-3.2.7-3.88-1.4-3.88-1.4-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ========================================================== Hero 首屏 -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <span class="eyebrow anim" style="--delay:0ms">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-version>v1.0.1</span>
+          <span data-i18n="hero.badge">已发布</span>
+        </span>
+
+        <h1 class="hero__title anim" style="--delay:80ms" data-i18n-html="hero.title">到点下班，<br><span class="accent">电脑也是</span></h1>
+
+        <p class="hero__sub anim" style="--delay:160ms" data-i18n="hero.subtitle">一款跨平台的定时关机工具。设好时间，到点自动关闭，锁屏也能可靠触发。</p>
+
+        <div class="hero__note anim" style="--delay:200ms" data-platform-note>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+          </svg>
+          <span data-i18n="hero.note.platform">当前提供 Windows 版，macOS / Linux 版敬请期待。</span>
+        </div>
+
+        <div class="hero__cta anim" style="--delay:240ms">
+          <a class="btn btn--primary btn--lg" href="./ShutdownTimer.exe" data-download>
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
+            </svg>
+            <span data-i18n="hero.cta.download">下载 Windows 版</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="changelog/" data-i18n="hero.cta.changelog">查看更新日志</a>
+        </div>
+
+        <div class="hero__meta anim" style="--delay:320ms">
+          <span data-version>v1.0.1</span>
+          <span aria-hidden="true">·</span>
+          <span data-version-size>14 MB</span>
+          <span aria-hidden="true">·</span>
+          <span data-i18n="hero.meta.portable">免安装</span>
+          <span aria-hidden="true">·</span>
+          <span data-i18n="hero.meta.os">Windows 10 / 11</span>
+        </div>
+      </div>
+
+      <!-- 产品界面示意：圆角无边框窗口 + 倒计时圆环（纯 CSS/SVG 演示，不是截图） -->
+      <div class="hero__visual anim" style="--delay:200ms">
+        <div class="mock" data-demo>
+          <div class="mock__bar">
+            <span class="mock__dot" aria-hidden="true"></span>
+            <span class="mock__dot" aria-hidden="true"></span>
+            <span class="mock__dot" aria-hidden="true"></span>
+            <span class="mock__title" data-i18n="hero.demo.window">到点下班</span>
+            <span class="mock__badge" data-i18n="hero.demo.tag">演示</span>
+          </div>
+
+          <div class="mock__body">
+            <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="ring__track" cx="100" cy="100" r="84"/>
+              <circle class="ring__bar" cx="100" cy="100" r="84"/>
+            </svg>
+            <div class="ring__center">
+              <div class="ring__time" data-demo-time>00:30</div>
+              <div class="ring__hint" data-i18n="hero.demo.remaining">剩余时间</div>
+            </div>
+          </div>
+
+          <div class="mock__foot">
+            <span class="mock__preview" data-i18n-html="hero.demo.preview">今天 <b>23:00</b> 下班</span>
+            <span class="mock__state" data-demo-state data-i18n="hero.demo.state.running">运行中</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== 下载 -->
+  <section class="section" id="download" aria-labelledby="download-title">
+    <div class="container">
+      <div class="section__head section__head--center reveal">
+        <span class="eyebrow" data-i18n="download.eyebrow">下载</span>
+        <h2 class="section__title" id="download-title" data-i18n="download.title">选择你的平台</h2>
+        <p class="section__lead" data-i18n="download.lead">单文件、免安装，下载后双击即可运行。无需管理员权限即可完成常规定时关机。</p>
+      </div>
+
+      <div class="grid grid--3" data-stagger>
+        <!-- Windows -->
+        <article class="dl-card reveal" data-os="windows">
+          <div class="dl-card__top">
+            <span class="dl-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 5.9 10.6 4.9v6.7H3zM12.2 4.7 21 3.4v8.2h-8.8zM3 12.8h7.6v6.7L3 18.5zM12.2 12.8H21v7.8l-8.8-1.3z"/>
+              </svg>
+            </span>
+            <div>
+              <div class="dl-card__name">Windows</div>
+              <div class="dl-card__meta" data-i18n="download.win.meta">Windows 10 / 11 · x64 · 免安装</div>
+            </div>
+            <span class="pill" data-current-badge hidden data-i18n="download.current">当前系统</span>
+          </div>
+
+          <div class="dl-card__file">ShutdownTimer.exe · <span data-version-size>38 MB</span></div>
+
+          <div class="dl-card__actions">
+            <a class="btn btn--primary btn--block" href="./ShutdownTimer.exe">
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
+              </svg>
+              <span data-i18n="download.win.btn">下载 Windows 版</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- macOS -->
+        <article class="dl-card is-soon reveal" data-os="macos">
+          <div class="dl-card__top">
+            <span class="dl-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9"/>
+                <path d="M2 16h20l-1.28 2.55a1 1 0 0 1-.9.45H4.18a1 1 0 0 1-.9-.45Z"/>
+              </svg>
+            </span>
+            <div>
+              <div class="dl-card__name">macOS</div>
+              <div class="dl-card__meta" data-i18n="download.mac.meta">macOS 12+ · Apple 芯片 / Intel</div>
+            </div>
+            <span class="pill" data-current-badge hidden data-i18n="download.current">当前系统</span>
+          </div>
+
+          <div class="dl-card__file">ShutdownTimer.dmg · <span data-i18n="download.mac.btn">敬请期待</span></div>
+
+          <div class="dl-card__actions">
+            <button class="btn btn--disabled btn--block" type="button" disabled>
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/>
+              </svg>
+              <span data-i18n="download.mac.btn">敬请期待</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Linux -->
+        <article class="dl-card is-soon reveal" data-os="linux">
+          <div class="dl-card__top">
+            <span class="dl-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m4 17 6-6-6-6"/><path d="M12 19h8"/>
+              </svg>
+            </span>
+            <div>
+              <div class="dl-card__name">Linux</div>
+              <div class="dl-card__meta" data-i18n="download.linux.meta">Linux x86_64</div>
+            </div>
+            <span class="pill" data-current-badge hidden data-i18n="download.current">当前系统</span>
+          </div>
+
+          <div class="dl-card__file">ShutdownTimer · <span data-i18n="download.linux.btn">敬请期待</span></div>
+
+          <div class="dl-card__actions">
+            <button class="btn btn--disabled btn--block" type="button" disabled>
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/>
+              </svg>
+              <span data-i18n="download.linux.btn">敬请期待</span>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <div class="dl-note reveal">
+        <span data-i18n="download.note.req">系统要求：Windows 10 及以上 / macOS 12 及以上</span>
+        <span aria-hidden="true">·</span>
+        <span data-i18n="download.note.tip">下载来自 GitHub Releases，链接永远指向最新版本。</span>
+        <a href="https://github.com/ZSOF-Rui/ShutdownTimer" target="_blank" rel="noopener"><span data-i18n="footer.source">源码仓库</span> ↗</a>
+        <a href="https://github.com/ZSOF-Rui/ShutdownTimerShutdownTimer/releases" target="_blank" rel="noopener">Releases ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== 特性 -->
+  <section class="section" id="features" aria-labelledby="features-title">
+    <div class="container">
+      <div class="section__head section__head--center reveal">
+        <span class="eyebrow" data-i18n="features.eyebrow">功能</span>
+        <h2 class="section__title" id="features-title" data-i18n="features.title">为「准点下班」而生</h2>
+        <p class="section__lead" data-i18n="features.lead">从倒计时到自动更新，所有设计都围绕一件事：到点就走。</p>
+      </div>
+
+      <div class="grid grid--3" data-stagger>
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 2h4"/><path d="M12 14l3-3"/><circle cx="12" cy="14" r="8"/>
+            </svg>
+          </span>
+          <h3 class="card__title" data-i18n="features.f1.title">精确倒计时</h3>
+          <p class="card__desc" data-i18n="features.f1.desc">后台线程 + wall clock 计时，锁屏或休眠唤醒后依然准时触发。</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="13.5" cy="6.5" r=".6" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".6" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".6" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".6" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.12a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.97 6.01 17.46 2 12 2Z"/>
+            </svg>
+          </span>
+          <h3 class="card__title" data-i18n="features.f2.title">四种主题</h3>
+          <p class="card__desc" data-i18n="features.f2.desc">午夜蓝 / 暗夜紫 / 森林绿 / 落日橙，切换时颜色平滑渐变。</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <circle cx="9" cy="9" r="2"/>
+              <path d="m21 15-3.09-3.09a2 2 0 0 0-2.83 0L6 21"/>
+            </svg>
+          </span>
+          <h3 class="card__title" data-i18n="features.f3.title">自定义壁纸</h3>
+          <p class="card__desc" data-i18n="features.f3.desc">本地图片、图片直链、随机图源，自动缩放裁剪为圆角卡片。</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+              <path d="M2 12h20"/>
+            </svg>
+          </span>
+          <h3 class="card__title" data-i18n="features.f4.title">中英双语</h3>
+          <p class="card__desc" data-i18n="features.f4.desc">一键切换，主窗口、设置窗口与提示全部同步。</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z"/>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+            </svg>
+          </span>
+          <h3 class="card__title" data-i18n="features.f5.title">开机自启</h3>
+          <p class="card__desc" data-i18n="features.f5.desc">Windows 走注册表，macOS 走 LaunchAgents，一次设置永久生效。</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
+            </svg>
+          </span>
+          <h3 class="card__title" data-i18n="features.f6.title">自动更新</h3>
+          <p class="card__desc" data-i18n="features.f6.desc">检测新版本，后台下载显示百分比进度，一键重启替换。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== 主题色板 -->
+  <section class="section section--tight" id="themes" aria-labelledby="themes-title">
+    <div class="container">
+      <div class="section__head section__head--center reveal">
+        <span class="eyebrow" data-i18n="themes.eyebrow">主题</span>
+        <h2 class="section__title" id="themes-title" data-i18n="themes.title">四种主题，总有一款适合你的桌面。</h2>
+        <p class="section__lead" data-i18n="themes.lead">点击色块即可即时预览，这里的配色与产品内置主题完全一致。</p>
+      </div>
+
+      <div class="swatches" data-stagger role="group" aria-label="主题配色预览" data-i18n-aria="themes.group">
+        <button class="swatch reveal" type="button" data-accent-value="blue" aria-pressed="true">
+          <span class="swatch__dot" aria-hidden="true"></span>
+          <span data-i18n="themes.blue">午夜蓝</span>
+        </button>
+        <button class="swatch reveal" type="button" data-accent-value="violet" aria-pressed="false">
+          <span class="swatch__dot" aria-hidden="true"></span>
+          <span data-i18n="themes.violet">暗夜紫</span>
+        </button>
+        <button class="swatch reveal" type="button" data-accent-value="green" aria-pressed="false">
+          <span class="swatch__dot" aria-hidden="true"></span>
+          <span data-i18n="themes.green">森林绿</span>
+        </button>
+        <button class="swatch reveal" type="button" data-accent-value="amber" aria-pressed="false">
+          <span class="swatch__dot" aria-hidden="true"></span>
+          <span data-i18n="themes.amber">落日橙</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== 更新公告（读 version.json） -->
+  <section class="section" id="release" aria-labelledby="release-title">
+    <div class="container">
+      <div class="release reveal">
+        <div class="release__aside">
+          <span class="eyebrow" data-i18n="release.eyebrow">更新</span>
+          <h2 class="release__version" id="release-title">
+            <span class="release__label" data-i18n="release.title">最新版本</span>
+            <span data-release-version>v1.0.1</span>
+          </h2>
+          <div class="release__date">
+            <span data-i18n="release.published">发布于</span>
+            <span data-release-date>2026-10-15</span>
+          </div>
+          <a class="btn btn--primary" href="https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer/releases/latest/download/ShutdownTimer.exe">
+            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
+            </svg>
+            <span data-i18n="download.win.btn">下载 Windows 版</span>
+          </a>
+        </div>
+
+        <div class="release__notes">
+          <h3 class="h-label" data-i18n="release.notes">更新说明</h3>
+          <ul data-release-notes>
+            <li data-i18n="release.fallback.0">检查更新：启动 3 秒后自动检查，支持后台下载与重启替换</li>
+            <li data-i18n="release.fallback.1">修复主题切换卡顿，降低倒计时渲染占用</li>
+            <li data-i18n="release.fallback.2">设置页新增版本信息行</li>
+          </ul>
+          <a class="release__more" href="changelog/">
+            <span data-i18n="release.more">查看完整更新日志</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M7 7h10v10"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== 常见问题 -->
+  <section class="section" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section__head section__head--center reveal">
+        <span class="eyebrow" data-i18n="faq.eyebrow">常见问题</span>
+        <h2 class="section__title" id="faq-title" data-i18n="faq.title">你可能想问的</h2>
+      </div>
+
+      <div class="faq" data-stagger>
+        <details class="reveal">
+          <summary data-i18n="faq.q1">关机会不会丢数据？</summary>
+          <p class="faq__answer" data-i18n="faq.a1">工具发出的是系统标准关机指令，与手动点「关机」完全一致。未保存的文档仍可能丢失，建议开始计时前先保存工作。</p>
+        </details>
+        <details class="reveal">
+          <summary data-i18n="faq.q2">支持锁屏后触发吗？</summary>
+          <p class="faq__answer" data-i18n="faq.a2">支持。倒计时在后台线程中基于 wall clock 计算，锁屏、休眠唤醒后都会按原定时间触发，不会因为界面不刷新而漂移。</p>
+        </details>
+        <details class="reveal">
+          <summary data-i18n="faq.q3">需要管理员权限吗？</summary>
+          <p class="faq__answer" data-i18n="faq.a3">常规定时关机不需要。如果系统策略限制或需要强制结束未响应程序，关机可能失败，此时主界面会直接显示错误原因。</p>
+        </details>
+        <details class="reveal">
+          <summary data-i18n="faq.q4">会上传我的数据吗？</summary>
+          <p class="faq__answer" data-i18n="faq.a4">不会。除了检查更新时请求一次 version.json，工具不发起任何网络请求，也不包含设备标识；配置只保存在你自己的电脑上。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================ 页脚 -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="brand" href="./" aria-label="返回首页" data-i18n-aria="nav.home">
+          <svg class="brand__mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="4" width="20" height="24" rx="5"/>
+            <circle cx="14" cy="16" r="6"/>
+            <path d="M14 12.5V16l3 1.8"/>
+          </svg>
+          <span data-i18n="brand.name">到点下班</span>
+        </a>
+        <p class="footer__tagline" data-i18n="footer.tagline">设好时间，到点下班。</p>
+        <p class="footer__tagline" data-i18n="footer.made">用 Python + tkinter 写成，仅依赖 Pillow。</p>
+      </div>
+
+      <div>
+        <h3 class="h-label" data-i18n="footer.product">产品</h3>
+        <div class="footer__links">
+          <a href="#features" data-i18n="nav.features">功能</a>
+          <a href="#download" data-i18n="nav.download">下载</a>
+          <a href="changelog/" data-i18n="nav.changelog">更新日志</a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="h-label" data-i18n="footer.project">项目</h3>
+        <div class="footer__links">
+          <a href="https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer" target="_blank" rel="noopener" data-i18n="footer.source">源码仓库</a>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer/releases" target="_blank" rel="noopener" data-i18n="footer.releases">发布版本</a>
+          <a href="https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer/issues" target="_blank" rel="noopener" data-i18n="footer.issues">问题反馈</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2026 ZSOF.Rui. All rights reserved.</span>
+      <span><span data-i18n="footer.version">版本</span> <span data-version>v1.1.0</span></span>
+      <a class="footer__social" href="https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer" target="_blank" rel="noopener" aria-label="GitHub" data-i18n-aria="nav.github">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-2.1c-3.2.7-3.88-1.4-3.88-1.4-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .3.2.66.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

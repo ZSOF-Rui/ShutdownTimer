@@ -1,0 +1,9 @@
+{
+  "version": "1.1.0",
+  "release_date": "2026-10-15",
+  "notes": "检查更新：启动 3 秒后自动检查，支持后台下载与重启替换\n修复主题切换卡顿，降低倒计时渲染占用\n设置页新增版本信息行",
+  "notes_en": "Update check: runs automatically 3 seconds after launch, with background download and restart-to-swap\nFixed theme switching stutter and lowered countdown rendering cost\nNew version row in the settings page",
+  "download_url": "https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer/releases/latest/download/ShutdownTimer.exe",
+  "download_size": "38 MB",
+  "release_url": "https://github.com/YOUR_GITHUB_USERNAME/ShutdownTimer/releases/latest"
+}
