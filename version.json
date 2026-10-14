@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "release_date": "2026-10-15",
   "notes": "修复了主题切换卡顿\n新增检查更新功能",
   "download_url": "https://shutdown.828696.xyz/ShutdownTimer.exe",
