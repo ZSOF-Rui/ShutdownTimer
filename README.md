@@ -48,7 +48,7 @@ Copyright (c) 2026 ZSOF.Rui. All Rights Reserved.
 ———————————————————————————————
 
 ShutdownTimer Proprietary License
-Copyright (c) 2025 ZSOF.Rui. All Rights Reserved.
+Copyright (c) 2026 ZSOF.Rui. All Rights Reserved.
 
 All rights not expressly granted herein are reserved by the copyright holder.
 Unauthorized use, reproduction, modification, or distribution of this software,
