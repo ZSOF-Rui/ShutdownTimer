@@ -1,7 +1,7 @@
 # ShutdownTimer
 ⏰ A beautiful cross-platform shutdown timer with custom wallpapers, themes, autostart, auto-update and lock-screen reliable triggering
 
-———————————————————————————————————————————————————————
+—————————————————————————————————————————————————
 # ⏰ ShutdownTimer
 
 > 一款精美的跨平台定时关机工具，让电脑在指定时间优雅地自动关闭。
@@ -46,7 +46,7 @@ cd ShutdownTimer
 pip install Pillow
 python ShutdownTimer.py
 
-—————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————————
 
 本软件及其源代码、文档、图像、图标等所有相关材料（以下简称"本软件"）
 均为 ZSOF.Rui（以下简称"版权人"）的专有财产，受中华人民共和国著作权法
