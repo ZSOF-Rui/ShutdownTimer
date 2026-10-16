@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://YOUR_GITHUB_USERNAME.github.io/ShutdownTimer/sitemap.xml
+Sitemap: https://shutdown.828696.xyz/sitemap.xml

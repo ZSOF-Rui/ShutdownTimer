@@ -181,12 +181,52 @@
     });
   });
 
-  /* ============================================================ 4. 平台检测 */
+  /* ============================================================ 4. 平台 / 架构检测 */
   var ua = navigator.userAgent || '';
   var platform = 'other';
   if (/Windows|Win32|Win64|WOW64/i.test(ua)) platform = 'windows';
   else if (/Macintosh|Mac OS X/i.test(ua) && !/iPhone|iPad|iPod/i.test(ua)) platform = 'macos';
   else if (/Linux/i.test(ua) && !/Android/i.test(ua)) platform = 'linux';
+
+  /* 32 位 / Windows 7 要选 x86 版：
+     · UA 里的「Windows NT 6.1」就是 Win7（6.0 是 Vista）
+     · Chromium 系还能问出 bitness，问到之后再用它校正一次
+     注意：不要用 UA 里的 WOW64 判断架构 —— 那是「32 位浏览器跑在 64 位系统上」，
+     系统本身仍是 64 位。 */
+  var nt = (ua.match(/Windows NT (\d+\.\d+)/) || [])[1] || '';
+  var needX86 = (platform === 'windows' && (nt === '6.1' || nt === '6.0'));
+
+  /* 换掉某个下载按钮的地址与文案（文案改动后仍走 data-i18n，切语言不会丢） */
+  function relink(el, href, key) {
+    if (!el) return;
+    el.setAttribute('href', href);
+    var span = el.querySelector('span');
+    if (!span) return;
+    span.setAttribute('data-i18n', key);
+    var value = text(key);
+    if (value !== null) span.textContent = value;
+  }
+
+  function applyArch(arch) {
+    root.setAttribute('data-arch', arch);
+    all('[data-build]').forEach(function (el) {
+      el.classList.toggle('is-current',
+        el.getAttribute('data-build') === arch);
+    });
+    var x86 = (arch === 'x86');
+    /* 首屏小字里的体积也跟着架构走 */
+    all('[data-hero-size]').forEach(function (el) {
+      el.hidden = (el.getAttribute('data-hero-size') !== arch);
+    });
+    /* 首屏主按钮：Win7 / 32 位访客直接拿到 x86 版 */
+    relink(doc.querySelector('[data-download]'),
+      x86 ? './ShutdownTimer_x86.exe' : './ShutdownTimer.exe',
+      x86 ? 'hero.cta.download.x86' : 'hero.cta.download');
+    /* 主按钮下面那行小链接：永远指向「另一个」架构 */
+    relink(doc.querySelector('[data-alt-download]'),
+      x86 ? './ShutdownTimer.exe' : './ShutdownTimer_x86.exe',
+      x86 ? 'hero.alt.x64' : 'hero.alt.x86');
+  }
 
   root.setAttribute('data-platform', platform);
 
@@ -201,7 +241,20 @@
     if (platform !== 'windows') {
       all('[data-platform-note]').forEach(function (el) { el.classList.add('is-visible'); });
     }
+    /* 只有 Windows 访客才需要区分 x64 / x86 —— 其他系统的下载按钮
+       本来就是「下载 Windows 版」，不该被改成 x86 版 */
+    if (platform === 'windows') applyArch(needX86 ? 'x86' : 'x64');
   })();
+
+  /* 能问出 CPU 位数就用它再校正一次（比 UA 准） */
+  try {
+    if (platform === 'windows' && navigator.userAgentData
+        && navigator.userAgentData.getHighEntropyValues) {
+      navigator.userAgentData.getHighEntropyValues(['bitness']).then(function (d) {
+        if (d && d.bitness === '32') applyArch('x86');
+      }).catch(function () { /* 问不到就算了 */ });
+    }
+  } catch (e) { /* 老浏览器没有 userAgentData */ }
 
   /* ============================================================ 5. 读取 version.json */
   var siteRoot = (root.getAttribute('data-root') || '.').replace(/\/+$/, '');

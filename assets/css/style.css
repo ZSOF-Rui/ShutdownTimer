@@ -479,6 +479,29 @@ html[lang='en'] .seg__thumb { transform: translateX(40px); }
   margin-bottom: 20px;
 }
 
+/* 主按钮下面的「换个架构」小链接 */
+.hero__alt {
+  margin: -8px 0 20px;
+  font-size: 13.5px;
+}
+
+.hero__alt-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 1px;
+  border-bottom: 1px dashed var(--border-strong);
+  color: var(--muted);
+  transition: color var(--dur), border-color var(--dur);
+}
+
+.hero__alt-link:hover {
+  color: var(--accent);
+  border-bottom-color: rgba(var(--accent-rgb), 0.55);
+}
+
+.hero__alt-link svg { width: 14px; height: 14px; flex: none; }
+
 .hero__meta {
   display: flex;
   flex-wrap: wrap;
@@ -754,6 +777,65 @@ html[lang='en'] .seg__thumb { transform: translateX(40px); }
 }
 
 .dl-card__actions { margin-top: auto; }
+
+/* 同一张卡片里的多个版本（x64 / x86） */
+.dl-builds { display: grid; gap: 10px; }
+
+.dl-build {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-soft);
+  transition: border-color var(--dur), background-color var(--dur);
+}
+
+.dl-build.is-current { border-color: rgba(var(--accent-rgb), 0.55); }
+
+.dl-build__info { flex: 1; min-width: 0; }
+
+.dl-build__arch {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.dl-build.is-current .dl-build__arch {
+  border-color: rgba(var(--accent-rgb), 0.45);
+  background: rgba(var(--accent-rgb), 0.14);
+  color: var(--accent);
+}
+
+.dl-build__os { font-size: 13px; font-weight: 600; }
+
+.dl-build__file {
+  margin-top: 4px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.dl-build .btn { flex: none; padding: 10px 16px; font-size: 14px; }
+
+.dl-build__hint {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 520px) {
+  .dl-build { flex-direction: column; align-items: stretch; }
+  .dl-build .btn { width: 100%; }
+}
 
 .dl-note {
   display: flex;

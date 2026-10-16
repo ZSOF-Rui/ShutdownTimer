@@ -7,7 +7,7 @@
   <title data-i18n="meta.title">到点下班 · 跨平台定时关机工具</title>
   <meta name="description" content="到点下班（ShutdownTimer）是一款跨平台的定时关机工具。设定时间后到点自动关闭计算机，锁屏与休眠唤醒后依然准时触发。免安装、不收集任何数据。" data-i18n-content="meta.description">
   <meta name="author" content="ZSOF.Rui">
-  <link rel="canonical" href="https://ZSOF-Rui.github.io/ShutdownTimer/">
+  <link rel="canonical" href="https://shutdown.828696.xyz/">
   <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f5f7fb" media="(prefers-color-scheme: light)">
 
@@ -20,7 +20,7 @@
   <meta property="og:site_name" content="到点下班">
   <meta property="og:title" content="到点下班 · 跨平台定时关机工具">
   <meta property="og:description" content="设好时间，到点自动关闭计算机。锁屏也能可靠触发，免安装，不收集任何数据。">
-  <meta property="og:url" content="https://ZSOF-Rui.github.io/ShutdownTimer/">
+  <meta property="og:url" content="https://shutdown.828696.xyz/">
   <meta property="og:locale" content="zh_CN">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="到点下班 · 跨平台定时关机工具">
@@ -151,14 +151,25 @@
           <a class="btn btn--ghost btn--lg" href="changelog/" data-i18n="hero.cta.changelog">查看更新日志</a>
         </div>
 
+        <!-- 主按钮下面这行小链接：脚本会把「另一个架构」的地址填进来 -->
+        <p class="hero__alt anim" style="--delay:280ms">
+          <a class="hero__alt-link" href="./ShutdownTimer_x86.exe" data-alt-download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
+            </svg>
+            <span data-i18n="hero.alt.x86">Windows 7 或 32 位系统？下载 x86 版</span>
+          </a>
+        </p>
+
         <div class="hero__meta anim" style="--delay:320ms">
           <span data-version>v1.0.3</span>
           <span aria-hidden="true">·</span>
-          <span data-version-size>14 MB</span>
+          <span data-hero-size="x64" data-version-size>14 MB</span>
+          <span data-hero-size="x86" hidden>9 MB</span>
           <span aria-hidden="true">·</span>
           <span data-i18n="hero.meta.portable">免安装</span>
           <span aria-hidden="true">·</span>
-          <span data-i18n="hero.meta.os">Windows 10 / 11</span>
+          <span data-i18n="hero.meta.os">Windows 7 / 10 / 11</span>
         </div>
       </div>
 
@@ -203,7 +214,7 @@
       </div>
 
       <div class="grid grid--3" data-stagger>
-        <!-- Windows -->
+        <!-- Windows：x64 与 x86（Win7 / 32 位）两个版本 -->
         <article class="dl-card reveal" data-os="windows">
           <div class="dl-card__top">
             <span class="dl-card__icon" aria-hidden="true">
@@ -213,21 +224,36 @@
             </span>
             <div>
               <div class="dl-card__name">Windows</div>
-              <div class="dl-card__meta" data-i18n="download.win.meta">Windows 10 / 11 · x64 · 免安装</div>
+              <div class="dl-card__meta" data-i18n="download.win.meta">Windows 7 ~ 11 · 免安装</div>
             </div>
             <span class="pill" data-current-badge hidden data-i18n="download.current">当前系统</span>
           </div>
 
-          <div class="dl-card__file">ShutdownTimer.exe · <span data-version-size>14 MB</span></div>
+          <div class="dl-builds">
+            <div class="dl-build" data-build="x64">
+              <div class="dl-build__info">
+                <span class="dl-build__arch">x64</span>
+                <span class="dl-build__os" data-i18n="download.x64.os">Windows 10 / 11（64 位）</span>
+                <div class="dl-build__file">ShutdownTimer.exe · 14 MB</div>
+              </div>
+              <a class="btn btn--primary" href="./ShutdownTimer.exe" data-dl="x64">
+                <span data-i18n="download.x64.btn">下载 x64</span>
+              </a>
+            </div>
 
-          <div class="dl-card__actions">
-            <a class="btn btn--primary btn--block" href="./ShutdownTimer.exe">
-              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
-              </svg>
-              <span data-i18n="download.win.btn">下载 Windows 版</span>
-            </a>
+            <div class="dl-build" data-build="x86">
+              <div class="dl-build__info">
+                <span class="dl-build__arch">x86</span>
+                <span class="dl-build__os" data-i18n="download.x86.os">Windows 7 SP1 及以上（32 位）</span>
+                <div class="dl-build__file">ShutdownTimer_x86.exe · 9 MB</div>
+              </div>
+              <a class="btn btn--ghost" href="./ShutdownTimer_x86.exe" data-dl="x86">
+                <span data-i18n="download.x86.btn">下载 x86</span>
+              </a>
+            </div>
           </div>
+
+          <p class="dl-build__hint" data-i18n="download.arch.hint">不确定选哪个？Windows 7 或 32 位系统请选 x86 版，其余选 x64 版。</p>
         </article>
 
         <!-- macOS -->
@@ -287,11 +313,11 @@
       </div>
 
       <div class="dl-note reveal">
-        <span data-i18n="download.note.req">系统要求：Windows 10 及以上 / macOS 12 及以上</span>
+        <span data-i18n="download.note.req">系统要求：Windows 7 SP1 及以上（x86 版）/ Windows 10 及以上（x64 版）</span>
         <span aria-hidden="true">·</span>
-        <span data-i18n="download.note.tip">下载来自 GitHub Releases，链接永远指向最新版本。</span>
+        <span data-i18n="download.note.tip">下载由本站直接提供，和自动更新用的是同一份文件。</span>
         <a href="https://github.com/ZSOF-Rui/ShutdownTimer" target="_blank" rel="noopener"><span data-i18n="footer.source">源码仓库</span> ↗</a>
-        <a href="https://github.com/ZSOF-Rui/ShutdownTimerShutdownTimer/releases" target="_blank" rel="noopener">Releases ↗</a>
+        <a href="https://github.com/ZSOF-Rui/ShutdownTimer/releases" target="_blank" rel="noopener">Releases ↗</a>
       </div>
     </div>
   </section>

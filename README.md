@@ -39,8 +39,11 @@
 
 前往 [Releases](../../releases) 下载最新版本：
 
-- **Windows**：`ShutdownTimer.exe`（双击即用，无需安装）
+- **Windows 10 / 11（64 位）**：`ShutdownTimer.exe`（双击即用，无需安装）
+- **Windows 7 SP1 及以上 / 32 位**：`ShutdownTimer_x86.exe`（老机器与 Win7 选这个）
 - **macOS**：`ShutdownTimer.app.zip`（解压后拖入 Applications）
+
+> 两个 Windows 版本功能完全一致，只是打包架构不同：x64 版性能更好，x86 版兼容 32 位系统与 Windows 7。
 
 ### 从源码运行
 
