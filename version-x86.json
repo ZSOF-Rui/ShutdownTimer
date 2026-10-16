@@ -1,6 +1,6 @@
 {
   "version": "1.0.3",
-  "release_date": "2026-10-15",
+  "release_date": "2026-10-16",
   "notes": "检查更新：启动 3 秒后自动检查，支持后台下载与重启替换\n修复主题切换卡顿，降低倒计时渲染占用\n设置页新增版本信息行",
   "download_url": "./ShutdownTimer-x86.exe",
   "sha256": "",
