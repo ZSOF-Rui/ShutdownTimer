@@ -1,7 +1,8 @@
 {
   "version": "1.0.3",
-  "release_date": "2026-10-16",
-  "notes": "检查更新：启动 3 秒后自动检查，支持后台下载与重启替换\n修复主题切换卡顿，降低倒计时渲染占用\n设置页新增版本信息行",
+  "release_date": "2026-10-17",
+  "notes": "新增 macOS 版（Apple 芯片 / Intel），支持应用内自动更新\n新增 x86 版本，兼容 Windows 7 / 32 位系统\n修复下载后无法自动更新的问题",
+  "notes_en": "Added macOS builds (Apple silicon / Intel) with in-app auto-update\nAdded an x86 build for Windows 7 and 32-bit systems\nFixed the downloaded update never being applied",
   "download_url": "https://zsof-rui.github.io/ShutdownTimer/ShutdownTimer_x86.exe",
   "sha256": "50BF755FAC29FF79FD95394FD4411C04D326314BB7595EF491DEF460501EE79D",
   "release_url": "https://github.com/ZSOF-Rui/ShutdownTimer/releases/tag/v1.0.3"

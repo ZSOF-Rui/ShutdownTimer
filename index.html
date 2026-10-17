@@ -138,7 +138,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
           </svg>
-          <span data-i18n="hero.note.platform">当前提供 Windows 版，macOS / Linux 版敬请期待。</span>
+          <span data-i18n="hero.note.platform">Windows 与 macOS 版已发布，Linux 版敬请期待。</span>
         </div>
 
         <div class="hero__cta anim" style="--delay:240ms">
@@ -256,8 +256,8 @@
           <p class="dl-build__hint" data-i18n="download.arch.hint">不确定选哪个？Windows 7 或 32 位系统请选 x86 版，其余选 x64 版。</p>
         </article>
 
-        <!-- macOS -->
-        <article class="dl-card is-soon reveal" data-os="macos">
+        <!-- macOS：Apple 芯片 / Intel 两个包 -->
+        <article class="dl-card reveal" data-os="macos">
           <div class="dl-card__top">
             <span class="dl-card__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -272,16 +272,31 @@
             <span class="pill" data-current-badge hidden data-i18n="download.current">当前系统</span>
           </div>
 
-          <div class="dl-card__file">ShutdownTimer.dmg · <span data-i18n="download.mac.btn">敬请期待</span></div>
+          <div class="dl-builds">
+            <div class="dl-build" data-mac-build="arm64">
+              <div class="dl-build__info">
+                <span class="dl-build__arch">arm64</span>
+                <span class="dl-build__os" data-i18n="download.mac.arm.os">Apple 芯片（M 系列）</span>
+                <div class="dl-build__file">ShutdownTimer-macos-arm64.dmg</div>
+              </div>
+              <a class="btn btn--primary" href="./ShutdownTimer-macos-arm64.dmg">
+                <span data-i18n="download.mac.arm.btn">下载 arm64</span>
+              </a>
+            </div>
 
-          <div class="dl-card__actions">
-            <button class="btn btn--disabled btn--block" type="button" disabled>
-              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/>
-              </svg>
-              <span data-i18n="download.mac.btn">敬请期待</span>
-            </button>
+            <div class="dl-build" data-mac-build="x64">
+              <div class="dl-build__info">
+                <span class="dl-build__arch">x64</span>
+                <span class="dl-build__os" data-i18n="download.mac.x64.os">Intel 机型</span>
+                <div class="dl-build__file">ShutdownTimer-macos-x64.dmg</div>
+              </div>
+              <a class="btn btn--ghost" href="./ShutdownTimer-macos-x64.dmg">
+                <span data-i18n="download.mac.x64.btn">下载 x64</span>
+              </a>
+            </div>
           </div>
+
+          <p class="dl-build__hint" data-i18n="download.mac.hint">不确定哪种？苹果菜单 → 关于本机 → 看「芯片」：Apple M 系列选 arm64，Intel 选 x64。</p>
         </article>
 
         <!-- Linux -->
@@ -313,7 +328,7 @@
       </div>
 
       <div class="dl-note reveal">
-        <span data-i18n="download.note.req">系统要求：Windows 7 SP1 及以上（x86 版）/ Windows 10 及以上（x64 版）</span>
+        <span data-i18n="download.note.req">系统要求：Windows 7 SP1 及以上（x86 版）/ Windows 10 及以上（x64 版）/ macOS 12 及以上</span>
         <span aria-hidden="true">·</span>
         <span data-i18n="download.note.tip">下载由本站直接提供，和自动更新用的是同一份文件。</span>
         <a href="https://github.com/ZSOF-Rui/ShutdownTimer" target="_blank" rel="noopener"><span data-i18n="footer.source">源码仓库</span> ↗</a>

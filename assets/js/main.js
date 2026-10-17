@@ -207,25 +207,61 @@
     if (value !== null) span.textContent = value;
   }
 
+  /* 首屏下载按钮：按「平台 + 架构」换成对应的包和小链接 */
+  function applyDownloads(platformName, arch) {
+    var hero = doc.querySelector('[data-download]');
+    var alt = doc.querySelector('[data-alt-download]');
+
+    if (platformName === 'macos') {
+      /* macOS：arm64 / Intel 两个包，主按钮给当前芯片，小链接给另一个 */
+      var arm = (arch !== 'x64');
+      relink(hero,
+        arm ? './ShutdownTimer-macos-arm64.dmg' : './ShutdownTimer-macos-x64.dmg',
+        arm ? 'hero.cta.download.mac.arm' : 'hero.cta.download.mac.x64');
+      relink(alt,
+        arm ? './ShutdownTimer-macos-x64.dmg' : './ShutdownTimer-macos-arm64.dmg',
+        arm ? 'hero.alt.mac.x64' : 'hero.alt.mac.arm');
+      return;
+    }
+
+    if (platformName === 'windows') {
+      var x86 = (arch === 'x86');
+      relink(hero,
+        x86 ? './ShutdownTimer_x86.exe' : './ShutdownTimer.exe',
+        x86 ? 'hero.cta.download.x86' : 'hero.cta.download');
+      relink(alt,
+        x86 ? './ShutdownTimer.exe' : './ShutdownTimer_x86.exe',
+        x86 ? 'hero.alt.x64' : 'hero.alt.x86');
+      return;
+    }
+
+    /* 其它系统：主按钮保持 Windows 版，小链接指向下载区的 macOS 两行 */
+    relink(hero, './ShutdownTimer.exe', 'hero.cta.download');
+    relink(alt, '#download', 'hero.alt.mac.any');
+  }
+
+  /* 非 Windows 访客：首屏小字里的「体积 / Windows 7 / 10 / 11」不适用 */
+  function applyNonWindowsMeta(platformName) {
+    all('[data-hero-size]').forEach(function (el) { el.hidden = true; });
+    if (platformName !== 'macos') return;
+    var osEl = doc.querySelector('[data-i18n="hero.meta.os"]');
+    if (!osEl) return;
+    osEl.setAttribute('data-i18n', 'hero.meta.os.mac');
+    var value = text('hero.meta.os.mac');
+    if (value !== null) osEl.textContent = value;
+  }
+
   function applyArch(arch) {
     root.setAttribute('data-arch', arch);
     all('[data-build]').forEach(function (el) {
       el.classList.toggle('is-current',
         el.getAttribute('data-build') === arch);
     });
-    var x86 = (arch === 'x86');
     /* 首屏小字里的体积也跟着架构走 */
     all('[data-hero-size]').forEach(function (el) {
       el.hidden = (el.getAttribute('data-hero-size') !== arch);
     });
-    /* 首屏主按钮：Win7 / 32 位访客直接拿到 x86 版 */
-    relink(doc.querySelector('[data-download]'),
-      x86 ? './ShutdownTimer_x86.exe' : './ShutdownTimer.exe',
-      x86 ? 'hero.cta.download.x86' : 'hero.cta.download');
-    /* 主按钮下面那行小链接：永远指向「另一个」架构 */
-    relink(doc.querySelector('[data-alt-download]'),
-      x86 ? './ShutdownTimer.exe' : './ShutdownTimer_x86.exe',
-      x86 ? 'hero.alt.x64' : 'hero.alt.x86');
+    applyDownloads('windows', arch);
   }
 
   root.setAttribute('data-platform', platform);
@@ -237,13 +273,20 @@
       var badge = card.querySelector('[data-current-badge]');
       if (badge) badge.removeAttribute('hidden');
     }
-    /* 非 Windows 访客：首页明确说明只有 Windows 版可选 */
+    /* 非 Windows 访客：说明各平台都有包，别以为只有 Windows 版 */
     if (platform !== 'windows') {
       all('[data-platform-note]').forEach(function (el) { el.classList.add('is-visible'); });
     }
-    /* 只有 Windows 访客才需要区分 x64 / x86 —— 其他系统的下载按钮
-       本来就是「下载 Windows 版」，不该被改成 x86 版 */
-    if (platform === 'windows') applyArch(needX86 ? 'x86' : 'x64');
+    if (platform === 'windows') {
+      applyArch(needX86 ? 'x86' : 'x64');
+    } else if (platform === 'macos') {
+      /* 先按 arm64（多数机型）给，问出真实架构再校正 */
+      applyDownloads('macos', 'arm64');
+      applyNonWindowsMeta('macos');
+    } else {
+      applyDownloads(platform, '');
+      applyNonWindowsMeta(platform);
+    }
   })();
 
   /* 能问出 CPU 位数就用它再校正一次（比 UA 准） */
@@ -255,6 +298,23 @@
       }).catch(function () { /* 问不到就算了 */ });
     }
   } catch (e) { /* 老浏览器没有 userAgentData */ }
+
+  /* macOS：问出 CPU 架构后，首屏按钮和下载区的行高亮一起校正
+     （Safari 问不到架构就保持 arm64，小链接给 Intel 版兜底） */
+  try {
+    if (platform === 'macos' && navigator.userAgentData
+        && navigator.userAgentData.getHighEntropyValues) {
+      navigator.userAgentData.getHighEntropyValues(['architecture'])
+        .then(function (d) {
+          var arch = (d && d.architecture === 'arm') ? 'arm64' : 'x64';
+          applyDownloads('macos', arch);
+          all('[data-mac-build]').forEach(function (el) {
+            el.classList.toggle('is-current',
+              el.getAttribute('data-mac-build') === arch);
+          });
+        }).catch(function () { /* 问不到就算了 */ });
+    }
+  } catch (e) { /* 没有 userAgentData */ }
 
   /* ============================================================ 5. 读取 version.json */
   var siteRoot = (root.getAttribute('data-root') || '.').replace(/\/+$/, '');
