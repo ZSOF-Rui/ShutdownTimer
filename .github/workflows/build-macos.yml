@@ -1,0 +1,42 @@
+name: Build ShutdownTimer for macOS
+
+on:
+  workflow_dispatch:      # 支持在 GitHub 网页手动触发
+  push:
+    tags:
+      - 'v*'             # 推送版本标签（如 v1.0.3）时自动触发
+
+jobs:
+  build-macos:
+    runs-on: macos-latest   # 使用 GitHub 最新的 macOS 环境
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'   # 请根据你 Win11 上的开发版本调整
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build with Nuitka (macOS App Bundle)
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: main
+          script-name: shutdowntimer.py   # ⚠️ 替换为你的实际入口文件名
+          mode: app                       # 关键：生成 macOS 的 .app 包
+          # 如果你的项目有图标，可以取消注释并修改路径：
+          # macos-app-icon: assets/icon.icns
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShutdownTimer-macOS
+          path: "*.app/**"        # 匹配生成的 .app 目录内容
+          include-hidden-files: true   # 重要：避免 .app 内部文件遗漏
+          retention-days: 7
