@@ -1,8 +1,8 @@
 {
   "version": "1.0.3",
   "release_date": "2026-10-17",
-  "notes": "macOS 版发布：Intel 机型专用包，支持 macOS 12 及以上\n修复下载后无法自动更新的问题\n倒计时渲染缓存，降低 CPU 占用",
+  "notes": "macOS（Intel） 版发布",
   "download_url": "https://zsof-rui.github.io/ShutdownTimer/ShutdownTimer-macos-x64.dmg",
-  "sha256": "",
+  "sha256": "22346f105d0aef618d1811b8798636a92065b69ef77b399b755a0491576ce68c",
   "release_url": "https://github.com/ZSOF-Rui/ShutdownTimer/releases/tag/v1.0.3"
 }
