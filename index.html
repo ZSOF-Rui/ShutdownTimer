@@ -11,9 +11,9 @@
   <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f5f7fb" media="(prefers-color-scheme: light)">
 
-  <!-- 图标：内联 SVG，随主题变色，不额外请求字体或图标库 -->
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="apple-touch-icon" href="assets/favicon.svg">
+  <!-- 站点图标：用与应用一致的 app.ico（内含 256×256） -->
+  <link rel="icon" type="image/x-icon" href="assets/app.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/app.ico">
 
   <!-- 分享卡片 -->
   <meta property="og:type" content="website">
@@ -77,11 +77,7 @@
   <div class="container">
     <nav class="nav" aria-label="主导航" data-i18n-aria="nav.main">
       <a class="brand" href="./" aria-label="返回首页" data-i18n-aria="nav.home">
-        <svg class="brand__mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="4" y="4" width="20" height="24" rx="5"/>
-          <circle cx="14" cy="16" r="6"/>
-          <path d="M14 12.5V16l3 1.8"/>
-        </svg>
+        <img class="brand__mark brand__mark--img" src="assets/app.ico" width="30" height="30" alt="" aria-hidden="true" decoding="async">
         <span data-i18n="brand.name">到点下班</span>
       </a>
 
@@ -531,11 +527,7 @@
     <div class="footer__grid">
       <div>
         <a class="brand" href="./" aria-label="返回首页" data-i18n-aria="nav.home">
-          <svg class="brand__mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="4" y="4" width="20" height="24" rx="5"/>
-            <circle cx="14" cy="16" r="6"/>
-            <path d="M14 12.5V16l3 1.8"/>
-          </svg>
+          <img class="brand__mark brand__mark--img" src="assets/app.ico" width="30" height="30" alt="" aria-hidden="true" decoding="async">
           <span data-i18n="brand.name">到点下班</span>
         </a>
         <p class="footer__tagline" data-i18n="footer.tagline">设好时间，到点下班。</p>
