@@ -4,6 +4,6 @@
   "notes": "新增 macOS 版（Apple 芯片 / Intel），支持应用内自动更新\n新增 x86 版本，兼容 Windows 7 / 32 位系统\n修复下载后无法自动更新的问题",
   "notes_en": "Added macOS builds (Apple silicon / Intel) with in-app auto-update\nAdded an x86 build for Windows 7 and 32-bit systems\nFixed the downloaded update never being applied",
   "download_url": "https://zsof-rui.github.io/ShutdownTimer/ShutdownTimer.exe",
-  "sha256": "",
+  "sha256": "603863b2321f4b17f1f5d6db8db70fba4369e2799a2f43b78940e9356cdbb8c4",
   "release_url": "https://github.com/ZSOF-Rui/ShutdownTimer/releases/tag/v1.0.3"
 }
