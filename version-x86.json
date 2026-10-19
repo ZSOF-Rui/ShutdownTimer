@@ -1,8 +1,8 @@
 {
   "version": "1.0.3",
-  "release_date": "2026-10-17",
+  "release_date": "2026-10-19",
   "notes": "Windows 7 / 32 位 版发布",
   "download_url": "https://zsof-rui.github.io/ShutdownTimer/ShutdownTimer_x86.exe",
-  "sha256": "2319ba5b85821f85f6b14034510c5ba4245ce5245dc2bdcd852d2fc1b11bd338",
+  "sha256": "29bcf49d2a836569eb39bd4341a5c1b58fcadfcc9d2b90f373f75b64cd8571ce",
   "release_url": "https://github.com/ZSOF-Rui/ShutdownTimer/releases/tag/v1.0.3"
 }

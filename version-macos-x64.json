@@ -1,8 +1,8 @@
 {
   "version": "1.0.3",
-  "release_date": "2026-10-17",
+  "release_date": "2026-10-19",
   "notes": "macOS（Intel） 版发布",
   "download_url": "https://zsof-rui.github.io/ShutdownTimer/ShutdownTimer-macos-x64.dmg",
-  "sha256": "22346f105d0aef618d1811b8798636a92065b69ef77b399b755a0491576ce68c",
+  "sha256": "00bd946306c90c94da7d0001a6be7badd98fbb1878d3d4181f72d29ac00c927f",
   "release_url": "https://github.com/ZSOF-Rui/ShutdownTimer/releases/tag/v1.0.3"
 }
